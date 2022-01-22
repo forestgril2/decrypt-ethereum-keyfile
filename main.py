@@ -11,26 +11,27 @@ def read_json(filename):
     with open(filename) as f_in:
         return(json.load(f_in))
 
-def main(filename):
+def main(filename, password):
     if filename == None:
         filename = "key.json"
     fulldata = read_json(filename)
     data = fulldata["crypto"]
-    password = getpass()
+#    password = getpass()
     k = key(password, data)
-    print("key: {}".format(key))
+#    print("key: {}".format(key))
     if (verify(k, data)):
         print("Password verified.")
-        iv_int = int(data["cipherparams"]["iv"], 16)
-        ctr = Counter.new(AES.block_size * 8, initial_value=iv_int)
-        dec_suite = AES.new(k[:16], AES.MODE_CTR, counter=ctr)
-        decrypted_private_key = dec_suite.decrypt(bytes.fromhex(data["ciphertext"]))
-        print(decrypted_private_key.hex())
+#        iv_int = int(data["cipherparams"]["iv"], 16)
+#        ctr = Counter.new(AES.block_size * 8, initial_value=iv_int)
+#        dec_suite = AES.new(k[:16], AES.MODE_CTR, counter=ctr)
+#        decrypted_private_key = dec_suite.decrypt(bytes.fromhex(data["ciphertext"]))
+#        print(decrypted_private_key.hex())
 
     else:
         print("Password NOT verified.")
 
 if __name__ == '__main__':
     filename = sys.argv[1] if len(sys.argv) > 1 else None
-    main(filename)
+    password = sys.argv[2] if len(sys.argv) > 2 else None
+    main(filename, password)
 
